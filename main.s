@@ -29,7 +29,7 @@ start:
 
 loop: 
 	;call Touchpanel_Coordinates_Hex
-	movlw	
+	movlw	71
 	
 	call Servo_Pulse
 	movlw	0x60

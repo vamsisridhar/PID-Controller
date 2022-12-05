@@ -25,7 +25,7 @@ psect servo_code, class =CODE
 
     Servo_delay_ms:		    ; delay given in ms in W
 	movwf	Servo_cnt_ms, A
-	ser_dl2:	movlw	50	    ; 0.2 ms delay
+	ser_dl2:	movlw	5	    ; 0.02 ms delay
 		call	Servo_delay_x4us	
 		decfsz	Servo_cnt_ms, A
 		bra	ser_dl2

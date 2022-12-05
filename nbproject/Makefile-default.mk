@@ -57,17 +57,17 @@ OBJECTDIR=build/${CND_CONF}/${IMAGE_TYPE}
 DISTDIR=dist/${CND_CONF}/${IMAGE_TYPE}
 
 # Source Files Quoted if spaced
-SOURCEFILES_QUOTED_IF_SPACED=
+SOURCEFILES_QUOTED_IF_SPACED=ACD.s config.s LCD.s main.s Servo.s Touchpanel.s UART.s Numerical.s
 
 # Object Files Quoted if spaced
-OBJECTFILES_QUOTED_IF_SPACED=
-POSSIBLE_DEPFILES=
+OBJECTFILES_QUOTED_IF_SPACED=${OBJECTDIR}/ACD.o ${OBJECTDIR}/config.o ${OBJECTDIR}/LCD.o ${OBJECTDIR}/main.o ${OBJECTDIR}/Servo.o ${OBJECTDIR}/Touchpanel.o ${OBJECTDIR}/UART.o ${OBJECTDIR}/Numerical.o
+POSSIBLE_DEPFILES=${OBJECTDIR}/ACD.o.d ${OBJECTDIR}/config.o.d ${OBJECTDIR}/LCD.o.d ${OBJECTDIR}/main.o.d ${OBJECTDIR}/Servo.o.d ${OBJECTDIR}/Touchpanel.o.d ${OBJECTDIR}/UART.o.d ${OBJECTDIR}/Numerical.o.d
 
 # Object Files
-OBJECTFILES=
+OBJECTFILES=${OBJECTDIR}/ACD.o ${OBJECTDIR}/config.o ${OBJECTDIR}/LCD.o ${OBJECTDIR}/main.o ${OBJECTDIR}/Servo.o ${OBJECTDIR}/Touchpanel.o ${OBJECTDIR}/UART.o ${OBJECTDIR}/Numerical.o
 
 # Source Files
-SOURCEFILES=
+SOURCEFILES=ACD.s config.s LCD.s main.s Servo.s Touchpanel.s UART.s Numerical.s
 
 
 
@@ -94,7 +94,135 @@ MP_PROCESSOR_OPTION=PIC18F87K22
 # ------------------------------------------------------------------------------------
 # Rules for buildStep: pic-as-assembler
 ifeq ($(TYPE_IMAGE), DEBUG_RUN)
+${OBJECTDIR}/ACD.o: ACD.s  nbproject/Makefile-${CND_CONF}.mk 
+	@${MKDIR} "${OBJECTDIR}" 
+	@${RM} ${OBJECTDIR}/ACD.o 
+	${MP_AS} -mcpu=PIC18F87K22 -c \
+	-o ${OBJECTDIR}/ACD.o \
+	ACD.s \
+	 -misa=std -msummary=+mem,-psect,-class,-hex,-file,-sha1,-sha256,-xml,-xmlfull -fmax-errors=20 -mwarn=0 -xassembler-with-cpp
+	
+${OBJECTDIR}/config.o: config.s  nbproject/Makefile-${CND_CONF}.mk 
+	@${MKDIR} "${OBJECTDIR}" 
+	@${RM} ${OBJECTDIR}/config.o 
+	${MP_AS} -mcpu=PIC18F87K22 -c \
+	-o ${OBJECTDIR}/config.o \
+	config.s \
+	 -misa=std -msummary=+mem,-psect,-class,-hex,-file,-sha1,-sha256,-xml,-xmlfull -fmax-errors=20 -mwarn=0 -xassembler-with-cpp
+	
+${OBJECTDIR}/LCD.o: LCD.s  nbproject/Makefile-${CND_CONF}.mk 
+	@${MKDIR} "${OBJECTDIR}" 
+	@${RM} ${OBJECTDIR}/LCD.o 
+	${MP_AS} -mcpu=PIC18F87K22 -c \
+	-o ${OBJECTDIR}/LCD.o \
+	LCD.s \
+	 -misa=std -msummary=+mem,-psect,-class,-hex,-file,-sha1,-sha256,-xml,-xmlfull -fmax-errors=20 -mwarn=0 -xassembler-with-cpp
+	
+${OBJECTDIR}/main.o: main.s  nbproject/Makefile-${CND_CONF}.mk 
+	@${MKDIR} "${OBJECTDIR}" 
+	@${RM} ${OBJECTDIR}/main.o 
+	${MP_AS} -mcpu=PIC18F87K22 -c \
+	-o ${OBJECTDIR}/main.o \
+	main.s \
+	 -misa=std -msummary=+mem,-psect,-class,-hex,-file,-sha1,-sha256,-xml,-xmlfull -fmax-errors=20 -mwarn=0 -xassembler-with-cpp
+	
+${OBJECTDIR}/Servo.o: Servo.s  nbproject/Makefile-${CND_CONF}.mk 
+	@${MKDIR} "${OBJECTDIR}" 
+	@${RM} ${OBJECTDIR}/Servo.o 
+	${MP_AS} -mcpu=PIC18F87K22 -c \
+	-o ${OBJECTDIR}/Servo.o \
+	Servo.s \
+	 -misa=std -msummary=+mem,-psect,-class,-hex,-file,-sha1,-sha256,-xml,-xmlfull -fmax-errors=20 -mwarn=0 -xassembler-with-cpp
+	
+${OBJECTDIR}/Touchpanel.o: Touchpanel.s  nbproject/Makefile-${CND_CONF}.mk 
+	@${MKDIR} "${OBJECTDIR}" 
+	@${RM} ${OBJECTDIR}/Touchpanel.o 
+	${MP_AS} -mcpu=PIC18F87K22 -c \
+	-o ${OBJECTDIR}/Touchpanel.o \
+	Touchpanel.s \
+	 -misa=std -msummary=+mem,-psect,-class,-hex,-file,-sha1,-sha256,-xml,-xmlfull -fmax-errors=20 -mwarn=0 -xassembler-with-cpp
+	
+${OBJECTDIR}/UART.o: UART.s  nbproject/Makefile-${CND_CONF}.mk 
+	@${MKDIR} "${OBJECTDIR}" 
+	@${RM} ${OBJECTDIR}/UART.o 
+	${MP_AS} -mcpu=PIC18F87K22 -c \
+	-o ${OBJECTDIR}/UART.o \
+	UART.s \
+	 -misa=std -msummary=+mem,-psect,-class,-hex,-file,-sha1,-sha256,-xml,-xmlfull -fmax-errors=20 -mwarn=0 -xassembler-with-cpp
+	
+${OBJECTDIR}/Numerical.o: Numerical.s  nbproject/Makefile-${CND_CONF}.mk 
+	@${MKDIR} "${OBJECTDIR}" 
+	@${RM} ${OBJECTDIR}/Numerical.o 
+	${MP_AS} -mcpu=PIC18F87K22 -c \
+	-o ${OBJECTDIR}/Numerical.o \
+	Numerical.s \
+	 -misa=std -msummary=+mem,-psect,-class,-hex,-file,-sha1,-sha256,-xml,-xmlfull -fmax-errors=20 -mwarn=0 -xassembler-with-cpp
+	
 else
+${OBJECTDIR}/ACD.o: ACD.s  nbproject/Makefile-${CND_CONF}.mk 
+	@${MKDIR} "${OBJECTDIR}" 
+	@${RM} ${OBJECTDIR}/ACD.o 
+	${MP_AS} -mcpu=PIC18F87K22 -c \
+	-o ${OBJECTDIR}/ACD.o \
+	ACD.s \
+	 -misa=std -msummary=+mem,-psect,-class,-hex,-file,-sha1,-sha256,-xml,-xmlfull -fmax-errors=20 -mwarn=0 -xassembler-with-cpp
+	
+${OBJECTDIR}/config.o: config.s  nbproject/Makefile-${CND_CONF}.mk 
+	@${MKDIR} "${OBJECTDIR}" 
+	@${RM} ${OBJECTDIR}/config.o 
+	${MP_AS} -mcpu=PIC18F87K22 -c \
+	-o ${OBJECTDIR}/config.o \
+	config.s \
+	 -misa=std -msummary=+mem,-psect,-class,-hex,-file,-sha1,-sha256,-xml,-xmlfull -fmax-errors=20 -mwarn=0 -xassembler-with-cpp
+	
+${OBJECTDIR}/LCD.o: LCD.s  nbproject/Makefile-${CND_CONF}.mk 
+	@${MKDIR} "${OBJECTDIR}" 
+	@${RM} ${OBJECTDIR}/LCD.o 
+	${MP_AS} -mcpu=PIC18F87K22 -c \
+	-o ${OBJECTDIR}/LCD.o \
+	LCD.s \
+	 -misa=std -msummary=+mem,-psect,-class,-hex,-file,-sha1,-sha256,-xml,-xmlfull -fmax-errors=20 -mwarn=0 -xassembler-with-cpp
+	
+${OBJECTDIR}/main.o: main.s  nbproject/Makefile-${CND_CONF}.mk 
+	@${MKDIR} "${OBJECTDIR}" 
+	@${RM} ${OBJECTDIR}/main.o 
+	${MP_AS} -mcpu=PIC18F87K22 -c \
+	-o ${OBJECTDIR}/main.o \
+	main.s \
+	 -misa=std -msummary=+mem,-psect,-class,-hex,-file,-sha1,-sha256,-xml,-xmlfull -fmax-errors=20 -mwarn=0 -xassembler-with-cpp
+	
+${OBJECTDIR}/Servo.o: Servo.s  nbproject/Makefile-${CND_CONF}.mk 
+	@${MKDIR} "${OBJECTDIR}" 
+	@${RM} ${OBJECTDIR}/Servo.o 
+	${MP_AS} -mcpu=PIC18F87K22 -c \
+	-o ${OBJECTDIR}/Servo.o \
+	Servo.s \
+	 -misa=std -msummary=+mem,-psect,-class,-hex,-file,-sha1,-sha256,-xml,-xmlfull -fmax-errors=20 -mwarn=0 -xassembler-with-cpp
+	
+${OBJECTDIR}/Touchpanel.o: Touchpanel.s  nbproject/Makefile-${CND_CONF}.mk 
+	@${MKDIR} "${OBJECTDIR}" 
+	@${RM} ${OBJECTDIR}/Touchpanel.o 
+	${MP_AS} -mcpu=PIC18F87K22 -c \
+	-o ${OBJECTDIR}/Touchpanel.o \
+	Touchpanel.s \
+	 -misa=std -msummary=+mem,-psect,-class,-hex,-file,-sha1,-sha256,-xml,-xmlfull -fmax-errors=20 -mwarn=0 -xassembler-with-cpp
+	
+${OBJECTDIR}/UART.o: UART.s  nbproject/Makefile-${CND_CONF}.mk 
+	@${MKDIR} "${OBJECTDIR}" 
+	@${RM} ${OBJECTDIR}/UART.o 
+	${MP_AS} -mcpu=PIC18F87K22 -c \
+	-o ${OBJECTDIR}/UART.o \
+	UART.s \
+	 -misa=std -msummary=+mem,-psect,-class,-hex,-file,-sha1,-sha256,-xml,-xmlfull -fmax-errors=20 -mwarn=0 -xassembler-with-cpp
+	
+${OBJECTDIR}/Numerical.o: Numerical.s  nbproject/Makefile-${CND_CONF}.mk 
+	@${MKDIR} "${OBJECTDIR}" 
+	@${RM} ${OBJECTDIR}/Numerical.o 
+	${MP_AS} -mcpu=PIC18F87K22 -c \
+	-o ${OBJECTDIR}/Numerical.o \
+	Numerical.s \
+	 -misa=std -msummary=+mem,-psect,-class,-hex,-file,-sha1,-sha256,-xml,-xmlfull -fmax-errors=20 -mwarn=0 -xassembler-with-cpp
+	
 endif
 
 # ------------------------------------------------------------------------------------

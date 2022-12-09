@@ -1,40 +1,40 @@
 #include <xc.inc>
-    
-;Integration
-    ; trapezium rule
-    ; global var integral
-    ; integral += (x_n + x_(n-1)) * (dt/2)
-;Differentiation
-    ; dx_n = x_n - x_(n-1)/dt
-;Exponential Function
-    
-; Floating point addition
-    ; b1 = m1*2^e1-22 where m1 is signed, e1 >= 0
-    ; b2 = m2*2^e2-22 where m2 is signed, e2 >= 0
-    ; b1 + b2:
-    ;	if e2 > e1
-	;right bit shift on m1 by e1 + e2
-	;signed addition of m1_new + m2
-	;e = e2
-    ; b1 + b2 = (m2 + m1_new) * 2^e2-22
-
-; Floating point signed multiplication
-    ; 24 bit by 24 bit signed multiplication m1 * m2 = m3
-    ; truncate to 24 bits m3_new
-    ; e = e1 + e2
-    ; m3_new * 2^(e1+e2 - 22)
-    
-; Floating point division
-    ; right shift counter: rf
-    ; quotient 24 bit: m3
-    ; if e1-e2 < 0: rf += e2 - e1
-    ; if m1 < m2:
-	;right shift m1: rf += 1
-	;loop m2 until m1 < m2 and add the loop count to current m3 bit
-	
-	;repeat above until m3 on last bit
-    ; 
+global Numerical_Setup, IIR_Filter_X,IIR_Filter_Y 
 psect udata_acs
-Numerical_integral: 
+ 
+    IIR_Sum_X:  ds 1
+    IIR_Input_X:  ds 1
+    IIR_Sum_Y:  ds 1
+    IIR_Input_Y:  ds 1
+psect numerical_code, class =CODE
+Numerical_Setup:
+    movlw 0x00
+    movwf  IIR_Sum_X, A
+    movwf  IIR_Sum_Y, A
+    return
+
+IIR_Filter_X:
+
+    rrcf    IIR_Sum_X, 1, 0
+
+    movwf   IIR_Input_X, A
+    rrcf    IIR_Input_X, 1, 0
+    rrcf    IIR_Input_X, 0, 0
+
+    addwf   IIR_Sum_X, 1, 0
+    movf    IIR_Sum_X, W, A
+
+    return
+    
+    
+IIR_Filter_Y:
 
 
+rrcf    IIR_Sum_Y, 1, 0
+    rrcf    IIR_Sum_Y, 1, 0
+movwf   IIR_Input_Y, A
+    rrcf    IIR_Input_Y, 0, 0
+addwf   IIR_Sum_Y, 1, 0
+;movf    IIR_Sum_Y, W, A
+
+return

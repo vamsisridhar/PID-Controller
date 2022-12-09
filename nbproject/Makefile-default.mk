@@ -57,17 +57,17 @@ OBJECTDIR=build/${CND_CONF}/${IMAGE_TYPE}
 DISTDIR=dist/${CND_CONF}/${IMAGE_TYPE}
 
 # Source Files Quoted if spaced
-SOURCEFILES_QUOTED_IF_SPACED=ACD.s config.s LCD.s main.s Servo.s Touchpanel.s UART.s Numerical.s
+SOURCEFILES_QUOTED_IF_SPACED=ACD.s config.s LCD.s main.s Servo.s Touchpanel.s UART.s Numerical.s PID.s
 
 # Object Files Quoted if spaced
-OBJECTFILES_QUOTED_IF_SPACED=${OBJECTDIR}/ACD.o ${OBJECTDIR}/config.o ${OBJECTDIR}/LCD.o ${OBJECTDIR}/main.o ${OBJECTDIR}/Servo.o ${OBJECTDIR}/Touchpanel.o ${OBJECTDIR}/UART.o ${OBJECTDIR}/Numerical.o
-POSSIBLE_DEPFILES=${OBJECTDIR}/ACD.o.d ${OBJECTDIR}/config.o.d ${OBJECTDIR}/LCD.o.d ${OBJECTDIR}/main.o.d ${OBJECTDIR}/Servo.o.d ${OBJECTDIR}/Touchpanel.o.d ${OBJECTDIR}/UART.o.d ${OBJECTDIR}/Numerical.o.d
+OBJECTFILES_QUOTED_IF_SPACED=${OBJECTDIR}/ACD.o ${OBJECTDIR}/config.o ${OBJECTDIR}/LCD.o ${OBJECTDIR}/main.o ${OBJECTDIR}/Servo.o ${OBJECTDIR}/Touchpanel.o ${OBJECTDIR}/UART.o ${OBJECTDIR}/Numerical.o ${OBJECTDIR}/PID.o
+POSSIBLE_DEPFILES=${OBJECTDIR}/ACD.o.d ${OBJECTDIR}/config.o.d ${OBJECTDIR}/LCD.o.d ${OBJECTDIR}/main.o.d ${OBJECTDIR}/Servo.o.d ${OBJECTDIR}/Touchpanel.o.d ${OBJECTDIR}/UART.o.d ${OBJECTDIR}/Numerical.o.d ${OBJECTDIR}/PID.o.d
 
 # Object Files
-OBJECTFILES=${OBJECTDIR}/ACD.o ${OBJECTDIR}/config.o ${OBJECTDIR}/LCD.o ${OBJECTDIR}/main.o ${OBJECTDIR}/Servo.o ${OBJECTDIR}/Touchpanel.o ${OBJECTDIR}/UART.o ${OBJECTDIR}/Numerical.o
+OBJECTFILES=${OBJECTDIR}/ACD.o ${OBJECTDIR}/config.o ${OBJECTDIR}/LCD.o ${OBJECTDIR}/main.o ${OBJECTDIR}/Servo.o ${OBJECTDIR}/Touchpanel.o ${OBJECTDIR}/UART.o ${OBJECTDIR}/Numerical.o ${OBJECTDIR}/PID.o
 
 # Source Files
-SOURCEFILES=ACD.s config.s LCD.s main.s Servo.s Touchpanel.s UART.s Numerical.s
+SOURCEFILES=ACD.s config.s LCD.s main.s Servo.s Touchpanel.s UART.s Numerical.s PID.s
 
 
 
@@ -158,6 +158,14 @@ ${OBJECTDIR}/Numerical.o: Numerical.s  nbproject/Makefile-${CND_CONF}.mk
 	Numerical.s \
 	 -misa=std -msummary=+mem,-psect,-class,-hex,-file,-sha1,-sha256,-xml,-xmlfull -fmax-errors=20 -mwarn=0 -xassembler-with-cpp
 	
+${OBJECTDIR}/PID.o: PID.s  nbproject/Makefile-${CND_CONF}.mk 
+	@${MKDIR} "${OBJECTDIR}" 
+	@${RM} ${OBJECTDIR}/PID.o 
+	${MP_AS} -mcpu=PIC18F87K22 -c \
+	-o ${OBJECTDIR}/PID.o \
+	PID.s \
+	 -misa=std -msummary=+mem,-psect,-class,-hex,-file,-sha1,-sha256,-xml,-xmlfull -fmax-errors=20 -mwarn=0 -xassembler-with-cpp
+	
 else
 ${OBJECTDIR}/ACD.o: ACD.s  nbproject/Makefile-${CND_CONF}.mk 
 	@${MKDIR} "${OBJECTDIR}" 
@@ -221,6 +229,14 @@ ${OBJECTDIR}/Numerical.o: Numerical.s  nbproject/Makefile-${CND_CONF}.mk
 	${MP_AS} -mcpu=PIC18F87K22 -c \
 	-o ${OBJECTDIR}/Numerical.o \
 	Numerical.s \
+	 -misa=std -msummary=+mem,-psect,-class,-hex,-file,-sha1,-sha256,-xml,-xmlfull -fmax-errors=20 -mwarn=0 -xassembler-with-cpp
+	
+${OBJECTDIR}/PID.o: PID.s  nbproject/Makefile-${CND_CONF}.mk 
+	@${MKDIR} "${OBJECTDIR}" 
+	@${RM} ${OBJECTDIR}/PID.o 
+	${MP_AS} -mcpu=PIC18F87K22 -c \
+	-o ${OBJECTDIR}/PID.o \
+	PID.s \
 	 -misa=std -msummary=+mem,-psect,-class,-hex,-file,-sha1,-sha256,-xml,-xmlfull -fmax-errors=20 -mwarn=0 -xassembler-with-cpp
 	
 endif

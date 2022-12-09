@@ -10959,10 +10959,14 @@ ENDM
 # 2 "main.s" 2
 
 extrn UART_Setup, UART_Transmit_Message ; external subroutines
-extrn LCD_Setup, LCD_Write_Message, LCD_Write_Hex, LCD_Clear_Screen
+extrn LCD_Setup, LCD_Write_Message, LCD_Write_Hex, LCD_Clear_Screen, UART_Write_Hex
 extrn ADC_Init, ADC_Setup_X, ADC_Setup_Y, ADC_Read
 extrn Touchpanel_Coordinates_Hex
 extrn Servo_Setup, Servo_Pulse
+    extrn Numerical_Setup
+
+extrn Timer_Setup
+extrn PID_Cycle
 
 psect udata_acs ; reserve data space in access ram
 counter: ds 1 ; reserve one byte for a counter variable
@@ -10974,22 +10978,26 @@ rst: org 0x0
   goto setup
 
  ; ******* Programme FLASH read Setup Code ***********************
-setup: bcf ((EECON1) and 0FFh), 6, a ; point to Flash program memory
- bsf ((EECON1) and 0FFh), 7, a ; access Flash program memory
- call UART_Setup ; setup UART
+setup: call UART_Setup ; setup UART
  call LCD_Setup
  call ADC_Init
  call Servo_Setup
+ call Numerical_Setup
+
  goto start
+
+
+;int_hi: org 0x0008
+; goto PID_Cycle
 
  ; ******* Main programme ****************************************
 start:
-
+ call Timer_Setup
 loop:
- ;call Touchpanel_Coordinates_Hex
- movlw 71
+ call Touchpanel_Coordinates_Hex
 
- call Servo_Pulse
+
+
  movlw 0x60
  movwf big_delay_count, A
  call big_delay

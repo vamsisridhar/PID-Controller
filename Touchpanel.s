@@ -2,8 +2,8 @@
 
 global Touchpanel_Coordinates_Hex
 extrn  ADC_Setup_X, ADC_Setup_Y, ADC_Read
-extrn	LCD_Write_Hex
-	
+extrn	LCD_Write_Hex, UART_Transmit_Message, UART_Write_Hex
+extrn IIR_Filter_X, IIR_Filter_Y
 
     
 psect	udata_acs
@@ -42,7 +42,7 @@ glcdlp1:
 Touchpanel_delay_ms:		    ; delay given in ms in W
 	movwf	Touchpanel_cnt_ms, A
 glcdlp2:	
-	movlw	250	    ; 1 ms delay
+	movlw	125	    ; 1 ms delay
 	call	Touchpanel_delay_x4us	
 	decfsz	Touchpanel_cnt_ms, A
 	bra	glcdlp2
@@ -54,19 +54,40 @@ Touchpanel_Coordinates_Hex:
     call Touchpanel_delay_ms
     call ADC_Read
     
-    movf ADRESH, W, A
-    call LCD_Write_Hex
-    movf ADRESL, W, A
-    call LCD_Write_Hex
+    //call Moving_Average
+   
+    swapf ADRESH, 1, 0
+    movlw   0xF0
+    andwf ADRESH, 1, 0
+    
+    swapf ADRESL, 0, 0
+    movlw   0x0F
+    andwf ADRESL, 0, 0
+    
+    addwf ADRESH, 0, 0
+    //call IIR_Filter_Y
+    //call LCD_Write_Hex
+    call UART_Write_Hex
+    
     call ADC_Setup_X
     movlw   1
     call Touchpanel_delay_ms
     call ADC_Read
+    //call Moving_Average
     
-    movf ADRESH, W, A
-    call LCD_Write_Hex
-    movf ADRESL, W, A
-    call LCD_Write_Hex
+    swapf ADRESH, 1, 0
+    movlw   0xF0
+    andwf ADRESH, 1, 0
+    
+    swapf ADRESL, 0, 0
+    movlw   0x0F
+    andwf ADRESL, 0, 0
+    
+    addwf ADRESH, 0, 0
+    //call IIR_Filter_X
+    //call LCD_Write_Hex
+    call UART_Write_Hex
+    
     return
     
     

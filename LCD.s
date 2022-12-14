@@ -1,6 +1,6 @@
 #include <xc.inc>
 
-global  LCD_Setup, LCD_Write_Message, LCD_Write_Hex, LCD_Clear_Screen
+global  LCD_Setup, LCD_Write_Message, LCD_Write_Hex, LCD_Clear_Screen,LCD_New_Line
 
 psect	udata_acs   ; named variables in access ram
 LCD_cnt_l:	ds 1	; reserve 1 byte for variable LCD_cnt_l
@@ -64,7 +64,12 @@ LCD_Hex_Nib:			; writes low nibble as hex character
 	addwf	LCD_tmp, W, A
 	call	LCD_Send_Byte_D ; write out ascii
 	return	
-
+LCD_New_Line:
+	movlw	0010101000B	; entry mode incr by 1 no shift
+	call	LCD_Send_Byte_I
+	movlw	10		; wait 40us
+	call	LCD_delay_x4us
+	return
 LCD_Clear_Screen:
 	movlw	00000001B	; display clear
 	call	LCD_Send_Byte_I

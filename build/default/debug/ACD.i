@@ -10958,7 +10958,7 @@ ENDM
 # 5 "C:\\Program Files\\Microchip\\xc8\\v2.32\\pic\\include\\xc.inc" 2 3
 # 2 "ACD.s" 2
 
-global ADC_Init, ADC_Setup_X, ADC_Setup_Y, ADC_Read
+global ADC_Init, ADC_Setup_X, ADC_Setup_Y, ADC_Read, ADC_16_to_8
 
 psect udata_acs, space=1
 READX EQU 5
@@ -11006,6 +11006,17 @@ ADC_Setup_Y: ; measure from ((PORTF) and 0FFh), 2, a
     movwf ADCON2, A ; Fosc/64 clock and acquisition times
     return
 
+ADC_16_to_8:
+    swapf ADRESH, 1, 0
+    movlw 0xF0
+    andwf ADRESH, 1, 0
+
+    swapf ADRESL, 0, 0
+    movlw 0x0F
+    andwf ADRESL, 0, 0
+
+    addwf ADRESH, 0, 0
+    return
 
 ADC_Read:
  bsf ((ADCON0) and 0FFh), 1, a ; Start conversion by setting ((ADCON0) and 0FFh), 1, a bit in ADCON0

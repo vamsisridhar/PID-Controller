@@ -1,16 +1,21 @@
 #include <xc.inc>
 
-global Touchpanel_Coordinates_Hex
-extrn  ADC_Setup_X, ADC_Setup_Y, ADC_Read
+global Touchpanel_Coordinates_Hex, X_pos_H, X_pos_L, Y_pos_H, Y_pos_L
+extrn  ADC_Setup_X, ADC_Setup_Y, ADC_Read, ADC_16_to_8
 extrn	LCD_Write_Hex, UART_Transmit_Message, UART_Write_Hex
 extrn IIR_Filter_X, IIR_Filter_Y
-
+extrn IIR_Sum_X_L, IIR_Sum_X_H, IIR_Sum_Y_L, IIR_Sum_Y_H
     
 psect	udata_acs
 	Touchpanel_cnt_l:	ds 1	; reserve 1 byte for variable LCD_cnt_l
         Touchpanel_cnt_h:	ds 1	; reserve 1 byte for variable LCD_cnt_h
 	Touchpanel_cnt_2:	ds 1
 	Touchpanel_cnt_ms:	ds 1	; reserve 1 byte for ms counter
+    
+	X_pos_H:    ds 1
+	X_pos_L:    ds 1
+	Y_pos_H:    ds 1
+	Y_pos_L:    ds 1
 psect	touchpanel_code, class=CODE
 
 Touchpanel_delay_1us:
@@ -47,46 +52,55 @@ glcdlp2:
 	decfsz	Touchpanel_cnt_ms, A
 	bra	glcdlp2
 	return
-    	
-Touchpanel_Coordinates_Hex:
-    call ADC_Setup_Y
-    movlw   1
-    call Touchpanel_delay_ms
-    call ADC_Read
-    
-    //call Moving_Average
-   
-    swapf ADRESH, 1, 0
-    movlw   0xF0
-    andwf ADRESH, 1, 0
-    
-    swapf ADRESL, 0, 0
-    movlw   0x0F
-    andwf ADRESL, 0, 0
-    
-    addwf ADRESH, 0, 0
-    //call IIR_Filter_Y
-    //call LCD_Write_Hex
-    call UART_Write_Hex
-    
+
+Touchpanel_ReadX:
     call ADC_Setup_X
     movlw   1
     call Touchpanel_delay_ms
     call ADC_Read
-    //call Moving_Average
+    return
+
+Touchpanel_ReadY:
+    call ADC_Setup_Y
+    movlw   1
+    call Touchpanel_delay_ms
+    call ADC_Read
+    return
     
-    swapf ADRESH, 1, 0
-    movlw   0xF0
-    andwf ADRESH, 1, 0
+Touchpanel_Coordinates_Hex:
+    call Touchpanel_ReadY
+    //call ADC_16_to_8
+    //call IIR_Filter_Y
     
-    swapf ADRESL, 0, 0
-    movlw   0x0F
-    andwf ADRESL, 0, 0
+    movff  ADRESL, Y_pos_L
+    movff   ADRESH, Y_pos_H
     
-    addwf ADRESH, 0, 0
-    //call IIR_Filter_X
+    
+    
+    
+    movf Y_pos_H, W, A 
+    
+    
     //call LCD_Write_Hex
-    call UART_Write_Hex
+    //call UART_Write_Hex
+    movf Y_pos_L, W, A  
+    //call LCD_Write_Hex
+    //call UART_Write_Hex
+    
+    call Touchpanel_ReadX
+    //call ADC_16_to_8
+    //call IIR_Filter_X
+    
+    movff   ADRESL, X_pos_L
+    movff ADRESH, X_pos_H
+    
+    
+    movf X_pos_H, W, A  
+    //call LCD_Write_Hex
+    //call UART_Write_Hex
+    movf X_pos_L,W,  A  
+    //call LCD_Write_Hex
+    //call UART_Write_Hex
     
     return
     

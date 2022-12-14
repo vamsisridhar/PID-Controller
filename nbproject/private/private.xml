@@ -4,10 +4,11 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/C:/Users/vs1020/MPLABXProjects/PID%20Controller/PID_Controller.X/config.s</file>
-            <file>file:/C:/Users/vs1020/MPLABXProjects/PID%20Controller/PID_Controller.X/UART.s</file>
+            <file>file:/C:/Users/vs1020/MPLABXProjects/PID%20Controller/PID_Controller.X/Numerical.s</file>
             <file>file:/C:/Users/vs1020/MPLABXProjects/PID%20Controller/PID_Controller.X/ACD.s</file>
             <file>file:/C:/Users/vs1020/MPLABXProjects/PID%20Controller/PID_Controller.X/LCD.s</file>
             <file>file:/C:/Users/vs1020/MPLABXProjects/PID%20Controller/PID_Controller.X/PID.s</file>
+            <file>file:/C:/Users/vs1020/MPLABXProjects/PID%20Controller/PID_Controller.X/Servo.s</file>
             <file>file:/C:/Users/vs1020/MPLABXProjects/PID%20Controller/PID_Controller.X/Touchpanel.s</file>
             <file>file:/C:/Users/vs1020/MPLABXProjects/PID%20Controller/PID_Controller.X/main.s</file>
         </group>

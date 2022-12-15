@@ -10968,7 +10968,7 @@ extrn Touchpanel_Coordinates_Hex,X_pos_H, X_pos_L, Y_pos_H, Y_pos_L
 extrn Servo_Setup, S1_Pulse, S2_Pulse
 extrn Numerical_Setup, Subtraction_16bit, S1_H, S1_L, S2_H, S2_L
 extrn Division_by_Rotation_Signed_16_bit, D1_H, D1_L
-
+extrn Scaling, Dividend_H, Dividend_L, Divisor_H, Divisor_L,Scaling_by_Division_16bit_to_8bit
 psect udata_acs ; reserve data space in access ram
 counter: ds 1 ; reserve one byte for a counter variable
 delay_count:ds 1 ; reserve one byte for counter in the delay routine
@@ -10996,18 +10996,31 @@ der_x_L: ds 1
 der_y_H: ds 1
 der_y_L: ds 1
 
-PID_out_H: ds 1
-PID_out_L: ds 1
+PID_out_x_H: ds 1
+PID_out_x_L: ds 1
+
+PID_out_y_H: ds 1
+PID_out_y_L: ds 1
+
+Control_out_x_H: ds 1
+Control_out_x_L: ds 1
+
+Control_out_y_H: ds 1
+Control_out_y_L: ds 1
 
 scaled_err_x_H: ds 1
 scaled_err_x_L: ds 1
 scaled_err_y_H: ds 1
 scaled_err_y_L: ds 1
 
-scaled_dir_x_H: ds 1
-scaled_dir_x_L: ds 1
-scaled_dir_y_H: ds 1
-scaled_dir_y_L: ds 1
+scaled_der_x_H: ds 1
+scaled_der_x_L: ds 1
+scaled_der_y_H: ds 1
+scaled_der_y_L: ds 1
+
+Threshold_H: ds 1
+Threshold_L: ds 1
+
 
 psect adc_code, class=CODE
 
@@ -11015,7 +11028,7 @@ psect adc_code, class=CODE
 Timer_Setup:
     clrf TRISJ, A ; Set PORTD as all outputs
     clrf LATJ, A ; Clear PORTD outputs
-    movlw 10000111B ; Set timer1 to 16-bit, Fosc/4/25
+    movlw 10000010B ; Set timer1 to 16-bit, Fosc/4/25
     movwf T0CON, A ; = 62.5KHz clock rate, approx 1sec rollover
 
     movlw 34
@@ -11027,7 +11040,9 @@ Timer_Setup:
     movwf centre_x_L,A
     movwf centre_y_L,A
 
-
+    movlw 0x0300
+    movwf Threshold_H, A
+    movwf Threshold_L, A
 
 
     bsf ((INTCON) and 0FFh), 5, a ; Enable timer0 interrupt
@@ -11082,17 +11097,7 @@ PID_Cycle:
 
     movff err_y_H, scaled_err_y_H, A
     movff err_y_L, scaled_err_y_L, A
-
-    movf err_x_H, W, A
-    call LCD_Write_Hex
-    movf err_x_L, W, A
-    call LCD_Write_Hex
-
-    movf err_y_H, W, A
-    call LCD_Write_Hex
-    movf err_y_L, W, A
-    call LCD_Write_Hex
-
+# 153 "PID.s"
     movff scaled_err_x_H, D1_H, A
     movff scaled_err_x_L, D1_L, A
 
@@ -11119,10 +11124,14 @@ PID_Cycle:
     movf scaled_err_y_L, W, A
     call LCD_Write_Hex
 
+    movff scaled_err_x_L, PID_out_x_L
+    movff scaled_err_x_H, PID_out_x_H
+
+    movff scaled_err_y_L, PID_out_y_L
+    movff scaled_err_y_H, PID_out_y_H
 
 
 
-    call LCD_New_Line
     movff err_x_H, S1_H, A
     movff err_x_L, S1_L, A
     movff err_prev_x_H, S2_H, A
@@ -11133,10 +11142,8 @@ PID_Cycle:
     movff S1_H, der_x_H, A
     movff S1_L, der_x_L, A
 
-    movf der_x_H, W, A
-    call LCD_Write_Hex
-    movf der_x_L, W, A
-    call LCD_Write_Hex
+    movff der_x_H, scaled_der_x_H, A
+    movff der_x_L,scaled_der_x_L, A
 
     movff err_y_H, S1_H, A
     movff err_y_L, S1_L, A
@@ -11148,16 +11155,128 @@ PID_Cycle:
     movff S1_H, der_y_H, A
     movff S1_L, der_y_L, A
 
-    movf der_y_H, W, A
+    movff der_y_H, scaled_der_y_H, A
+    movff der_y_L,scaled_der_y_L, A
+# 224 "PID.s"
+    movff scaled_der_x_H, D1_H, A
+    movff scaled_der_x_L, D1_L, A
+
+    call Division_by_Rotation_Signed_16_bit
+
+    movff D1_H, scaled_der_x_H, A
+    movff D1_L, scaled_der_x_L, A
+
+    movff scaled_der_y_H, D1_H, A
+    movff scaled_der_y_L, D1_L, A
+
+    call Division_by_Rotation_Signed_16_bit
+
+    movff D1_H, scaled_der_y_H, A
+    movff D1_L, scaled_der_y_L, A
+
+    bcf ((STATUS) and 0FFh), 0, a
+    movf scaled_der_x_L, W, A
+    addwf PID_out_x_L, 1, 0
+
+    movf scaled_der_x_H, W, A
+    addwf PID_out_x_H, 1, 0
+
+    bcf ((STATUS) and 0FFh), 0, a
+    movf scaled_der_y_L, W, A
+    addwf PID_out_y_L, 1, 0
+
+    movf scaled_der_y_H, W, A
+    addwf PID_out_y_H, 1, 0
+
+    movf scaled_der_x_H, W, A
     call LCD_Write_Hex
-    movf der_y_L, W, A
+    movf scaled_der_x_L, W, A
+    call LCD_Write_Hex
+
+    movf scaled_der_y_H, W, A
+    call LCD_Write_Hex
+    movf scaled_der_y_L, W, A
+    call LCD_Write_Hex
+
+    call LCD_New_Line
+# 277 "PID.s"
+    btfss PID_out_x_H, 7, 0
+    goto skip_PID_x_2s_un_complement
+
+ movff PID_out_x_L, S1_L, A
+ movff PID_out_x_H, S1_H, A
+ movlw 0
+ movwf S2_H, A
+ movlw 1
+ movwf S2_L, A
+
+ call Subtraction_16bit
+
+ comf S1_H, 0, 0
+ movwf Control_out_x_H, A
+ comf S1_L, 0, 0
+ movwf Control_out_x_L, A
+
+    skip_PID_x_2s_un_complement:
+    btfsc PID_out_x_H, 7, 0
+    goto control_x_already_set
+
+ movff PID_out_x_H, Control_out_x_H, A
+ movff PID_out_x_L, Control_out_x_L, A
+
+    control_x_already_set:
+
+    btfss PID_out_y_H, 7, 0
+    goto skip_PID_y_2s_un_complement
+
+ movff PID_out_y_L, S1_L, A
+ movff PID_out_y_H, S1_H, A
+ movlw 0
+ movwf S2_H, A
+ movlw 1
+ movwf S2_L, A
+
+ call Subtraction_16bit
+
+ comf S1_H, 0, 0
+ movwf Control_out_y_H, A
+ comf S1_L, 0, 0
+ movwf Control_out_y_L, A
+
+    skip_PID_y_2s_un_complement:
+    btfsc PID_out_y_H, 7, 0
+    goto control_y_already_set
+
+ movff PID_out_y_H, Control_out_y_H, A
+ movff PID_out_y_L, Control_out_y_L, A
+
+    control_y_already_set:
+
+    movf Control_out_x_H, W, A
+    call LCD_Write_Hex
+    movf Control_out_x_L, W, A
+    call LCD_Write_Hex
+
+    movf Control_out_y_H, W, A
+    call LCD_Write_Hex
+    movf Control_out_y_L, W, A
     call LCD_Write_Hex
 
 
 
 
+    movff Control_out_x_H, Dividend_H, A
+    movff Control_out_x_L, Dividend_L, A
 
+    movff Threshold_H, Divisor_H, A
+    movff Threshold_L, Divisor_L, A
 
+    movlw 24
+    movwf Scaling, A
+
+    call Scaling_by_Division_16bit_to_8bit
+    movf PRODH, W, A
+    call LCD_Write_Hex
     ;58 - 90
     ;10 - -90
     ;34 - 0

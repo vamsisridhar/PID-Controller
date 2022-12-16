@@ -68,6 +68,7 @@ Touchpanel_ReadY:
     return
     
 Touchpanel_Coordinates_Hex:
+    
     call Touchpanel_ReadY
     //call ADC_16_to_8
     //call IIR_Filter_Y
@@ -81,12 +82,10 @@ Touchpanel_Coordinates_Hex:
     movf Y_pos_H, W, A 
     
     
-    //call LCD_Write_Hex
+    call UART_Write_Hex
     //call UART_Write_Hex
     movf Y_pos_L, W, A  
-    //call LCD_Write_Hex
-    //call UART_Write_Hex
-    
+    call UART_Write_Hex
     call Touchpanel_ReadX
     //call ADC_16_to_8
     //call IIR_Filter_X
@@ -96,10 +95,10 @@ Touchpanel_Coordinates_Hex:
     
     
     movf X_pos_H, W, A  
-    //call LCD_Write_Hex
+    call UART_Write_Hex
     //call UART_Write_Hex
     movf X_pos_L,W,  A  
-    //call LCD_Write_Hex
+    call UART_Write_Hex
     //call UART_Write_Hex
     
     return

@@ -10958,8 +10958,8 @@ ENDM
 # 5 "C:\\Program Files\\Microchip\\xc8\\v2.32\\pic\\include\\xc.inc" 2 3
 # 2 "Servo.s" 2
 
-global Servo_Setup,S1_Pulse, S2_Pulse
-
+global Servo_Setup,S1_Pulse, S2_Pulse, S_Pulse
+ extrn S1_pulse_value, S2_pulse_value
 psect udata_acs, space = 1
     S1_PWM EQU 0
     S2_PWM EQU 1
@@ -11014,6 +11014,38 @@ psect servo_code, class =CODE
 
 
  return
+
+    S_Pulse:
+ movwf Servo_duty_delay, A
+        movlw 20
+ movwf servo_counter, A
+ servo_pulsing:
+     movf S2_pulse_value, W, A
+     bsf LATD, S2_PWM, A
+     call Servo_delay_ms
+     bcf LATD, S2_PWM, A
+     movf Servo_duty_delay, W, A
+     sublw 250
+     call Servo_delay_ms
+     movlw 250
+     call Servo_delay_ms
+     decfsz servo_counter, A
+
+     movf S1_pulse_value, W, A
+     bsf LATD, S1_PWM, A
+     call Servo_delay_ms
+     bcf LATD, S1_PWM, A
+     movf Servo_duty_delay, W, A
+     sublw 250
+     call Servo_delay_ms
+     movlw 250
+     call Servo_delay_ms
+     decfsz servo_counter, A
+     goto servo_pulsing
+
+
+ return
+
 
  ; 250 is 1 ms
     Servo_delay_ms: ; delay given in ms in W

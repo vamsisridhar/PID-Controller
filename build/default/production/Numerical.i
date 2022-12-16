@@ -11057,9 +11057,7 @@ Subtraction_16bit:
     subwf S1_L, 1, 0
 
     movf S2_H, 0, 0
-    btfss ((STATUS) and 0FFh), 0, a
-    incfsz S2_H, 1, 0
-    subwf S1_H, 1, 0
+    subwfb S1_H, 1, 0
 
     return
 
@@ -11089,26 +11087,36 @@ Division_by_Rotation_Signed_16_bit:
 
 
 Scaling_by_Division_16bit_to_8bit:
+
     movlw 0x00
     movwf Decimal, A
     movlw 8
     movwf division_counter, A
+
+
     division_loop:
  decf division_counter, 1, 0
  bcf ((STATUS) and 0FFh), 0, a
- rrcf Dividend_L, 1, 0
- rrcf Dividend_H, 1, 0
+ rlcf Dividend_L, 1, 0
+ rlcf Dividend_H, 1, 0
+
+
 
  movff Dividend_L, S1_L, A
  movff Dividend_H, S1_H, A
+
+
 
  movff Divisor_L, S2_L, A
  movff Divisor_H, S2_H, A
 
  call Subtraction_16bit
 
+
  btfsc S1_H, 7, 0
  goto skip_decimal_set
+
+
 
 
  movlw 0x07
@@ -11138,6 +11146,7 @@ Scaling_by_Division_16bit_to_8bit:
 
  set_decimal_7:
  bsf Decimal, 7, 0
+
  goto end_decimal_setting
  set_decimal_6:
  bsf Decimal, 6, 0
@@ -11169,9 +11178,11 @@ Scaling_by_Division_16bit_to_8bit:
     movlw 0
     cpfseq division_counter, A
     goto division_loop
+
+
     movf Decimal, W, A
+
+
     mulwf Scaling, A
-
-
 
     return

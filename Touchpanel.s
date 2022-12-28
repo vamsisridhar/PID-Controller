@@ -1,10 +1,8 @@
 #include <xc.inc>
 
 global Touchpanel_Coordinates_Hex, X_pos_H, X_pos_L, Y_pos_H, Y_pos_L
-extrn  ADC_Setup_X, ADC_Setup_Y, ADC_Read, ADC_16_to_8
+extrn  ADC_Setup_X, ADC_Setup_Y, ADC_Read
 extrn	LCD_Write_Hex, UART_Transmit_Message, UART_Write_Hex
-extrn IIR_Filter_X, IIR_Filter_Y
-extrn IIR_Sum_X_L, IIR_Sum_X_H, IIR_Sum_Y_L, IIR_Sum_Y_H
     
 psect	udata_acs
 	Touchpanel_cnt_l:	ds 1	; reserve 1 byte for variable LCD_cnt_l

@@ -1,6 +1,6 @@
 #include <xc.inc>
 
-global  ADC_Init, ADC_Setup_X, ADC_Setup_Y, ADC_Read, ADC_16_to_8
+global  ADC_Init, ADC_Setup_X, ADC_Setup_Y, ADC_Read
    
 psect	udata_acs, space=1
 READX EQU 5
@@ -48,17 +48,6 @@ ADC_Setup_Y: ; measure from RF2
     movwf   ADCON2, A	    ; Fosc/64 clock and acquisition times
     return
 
-ADC_16_to_8:
-    swapf ADRESH, 1, 0
-    movlw   0xF0
-    andwf ADRESH, 1, 0
-    
-    swapf ADRESL, 0, 0
-    movlw   0x0F
-    andwf ADRESL, 0, 0
-    
-    addwf ADRESH, 0, 0
-    return
 	
 ADC_Read:
 	bsf	GO	    ; Start conversion by setting GO bit in ADCON0

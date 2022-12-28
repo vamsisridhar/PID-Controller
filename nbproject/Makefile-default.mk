@@ -28,14 +28,14 @@ CP=cp
 CND_CONF=default
 ifeq ($(TYPE_IMAGE), DEBUG_RUN)
 IMAGE_TYPE=debug
-OUTPUT_SUFFIX=hex
-DEBUGGABLE_SUFFIX=elf
-FINAL_IMAGE=dist/${CND_CONF}/${IMAGE_TYPE}/PID_Controller.X.${IMAGE_TYPE}.${OUTPUT_SUFFIX}
+OUTPUT_SUFFIX=cof
+DEBUGGABLE_SUFFIX=cof
+FINAL_IMAGE=dist/${CND_CONF}/${IMAGE_TYPE}/PID-Controller.${IMAGE_TYPE}.${OUTPUT_SUFFIX}
 else
 IMAGE_TYPE=production
 OUTPUT_SUFFIX=hex
-DEBUGGABLE_SUFFIX=elf
-FINAL_IMAGE=dist/${CND_CONF}/${IMAGE_TYPE}/PID_Controller.X.${IMAGE_TYPE}.${OUTPUT_SUFFIX}
+DEBUGGABLE_SUFFIX=cof
+FINAL_IMAGE=dist/${CND_CONF}/${IMAGE_TYPE}/PID-Controller.${IMAGE_TYPE}.${OUTPUT_SUFFIX}
 endif
 
 ifeq ($(COMPARE_BUILD), true)
@@ -70,7 +70,6 @@ OBJECTFILES=${OBJECTDIR}/ACD.o ${OBJECTDIR}/config.o ${OBJECTDIR}/LCD.o ${OBJECT
 SOURCEFILES=ACD.s config.s LCD.s main.s Servo.s Touchpanel.s UART.s Numerical.s PID.s
 
 
-
 CFLAGS=
 ASFLAGS=
 LDLIBSOPTIONS=
@@ -88,173 +87,26 @@ FIXDEPS=fixDeps
 ifneq ($(INFORMATION_MESSAGE), )
 	@echo $(INFORMATION_MESSAGE)
 endif
-	${MAKE}  -f nbproject/Makefile-default.mk dist/${CND_CONF}/${IMAGE_TYPE}/PID_Controller.X.${IMAGE_TYPE}.${OUTPUT_SUFFIX}
+	${MAKE}  -f nbproject/Makefile-default.mk dist/${CND_CONF}/${IMAGE_TYPE}/PID-Controller.${IMAGE_TYPE}.${OUTPUT_SUFFIX}
 
-MP_PROCESSOR_OPTION=PIC18F87K22
+MP_PROCESSOR_OPTION=18f87k22
+MP_LINKER_DEBUG_OPTION= 
 # ------------------------------------------------------------------------------------
-# Rules for buildStep: pic-as-assembler
+# Rules for buildStep: assemble
 ifeq ($(TYPE_IMAGE), DEBUG_RUN)
-${OBJECTDIR}/ACD.o: ACD.s  nbproject/Makefile-${CND_CONF}.mk 
-	@${MKDIR} "${OBJECTDIR}" 
-	@${RM} ${OBJECTDIR}/ACD.o 
-	${MP_AS} -mcpu=PIC18F87K22 -c \
-	-o ${OBJECTDIR}/ACD.o \
-	ACD.s \
-	 -misa=std -msummary=+mem,-psect,-class,-hex,-file,-sha1,-sha256,-xml,-xmlfull -fmax-errors=20 -mwarn=0 -xassembler-with-cpp
-	
-${OBJECTDIR}/config.o: config.s  nbproject/Makefile-${CND_CONF}.mk 
-	@${MKDIR} "${OBJECTDIR}" 
-	@${RM} ${OBJECTDIR}/config.o 
-	${MP_AS} -mcpu=PIC18F87K22 -c \
-	-o ${OBJECTDIR}/config.o \
-	config.s \
-	 -misa=std -msummary=+mem,-psect,-class,-hex,-file,-sha1,-sha256,-xml,-xmlfull -fmax-errors=20 -mwarn=0 -xassembler-with-cpp
-	
-${OBJECTDIR}/LCD.o: LCD.s  nbproject/Makefile-${CND_CONF}.mk 
-	@${MKDIR} "${OBJECTDIR}" 
-	@${RM} ${OBJECTDIR}/LCD.o 
-	${MP_AS} -mcpu=PIC18F87K22 -c \
-	-o ${OBJECTDIR}/LCD.o \
-	LCD.s \
-	 -misa=std -msummary=+mem,-psect,-class,-hex,-file,-sha1,-sha256,-xml,-xmlfull -fmax-errors=20 -mwarn=0 -xassembler-with-cpp
-	
-${OBJECTDIR}/main.o: main.s  nbproject/Makefile-${CND_CONF}.mk 
-	@${MKDIR} "${OBJECTDIR}" 
-	@${RM} ${OBJECTDIR}/main.o 
-	${MP_AS} -mcpu=PIC18F87K22 -c \
-	-o ${OBJECTDIR}/main.o \
-	main.s \
-	 -misa=std -msummary=+mem,-psect,-class,-hex,-file,-sha1,-sha256,-xml,-xmlfull -fmax-errors=20 -mwarn=0 -xassembler-with-cpp
-	
-${OBJECTDIR}/Servo.o: Servo.s  nbproject/Makefile-${CND_CONF}.mk 
-	@${MKDIR} "${OBJECTDIR}" 
-	@${RM} ${OBJECTDIR}/Servo.o 
-	${MP_AS} -mcpu=PIC18F87K22 -c \
-	-o ${OBJECTDIR}/Servo.o \
-	Servo.s \
-	 -misa=std -msummary=+mem,-psect,-class,-hex,-file,-sha1,-sha256,-xml,-xmlfull -fmax-errors=20 -mwarn=0 -xassembler-with-cpp
-	
-${OBJECTDIR}/Touchpanel.o: Touchpanel.s  nbproject/Makefile-${CND_CONF}.mk 
-	@${MKDIR} "${OBJECTDIR}" 
-	@${RM} ${OBJECTDIR}/Touchpanel.o 
-	${MP_AS} -mcpu=PIC18F87K22 -c \
-	-o ${OBJECTDIR}/Touchpanel.o \
-	Touchpanel.s \
-	 -misa=std -msummary=+mem,-psect,-class,-hex,-file,-sha1,-sha256,-xml,-xmlfull -fmax-errors=20 -mwarn=0 -xassembler-with-cpp
-	
-${OBJECTDIR}/UART.o: UART.s  nbproject/Makefile-${CND_CONF}.mk 
-	@${MKDIR} "${OBJECTDIR}" 
-	@${RM} ${OBJECTDIR}/UART.o 
-	${MP_AS} -mcpu=PIC18F87K22 -c \
-	-o ${OBJECTDIR}/UART.o \
-	UART.s \
-	 -misa=std -msummary=+mem,-psect,-class,-hex,-file,-sha1,-sha256,-xml,-xmlfull -fmax-errors=20 -mwarn=0 -xassembler-with-cpp
-	
-${OBJECTDIR}/Numerical.o: Numerical.s  nbproject/Makefile-${CND_CONF}.mk 
-	@${MKDIR} "${OBJECTDIR}" 
-	@${RM} ${OBJECTDIR}/Numerical.o 
-	${MP_AS} -mcpu=PIC18F87K22 -c \
-	-o ${OBJECTDIR}/Numerical.o \
-	Numerical.s \
-	 -misa=std -msummary=+mem,-psect,-class,-hex,-file,-sha1,-sha256,-xml,-xmlfull -fmax-errors=20 -mwarn=0 -xassembler-with-cpp
-	
-${OBJECTDIR}/PID.o: PID.s  nbproject/Makefile-${CND_CONF}.mk 
-	@${MKDIR} "${OBJECTDIR}" 
-	@${RM} ${OBJECTDIR}/PID.o 
-	${MP_AS} -mcpu=PIC18F87K22 -c \
-	-o ${OBJECTDIR}/PID.o \
-	PID.s \
-	 -misa=std -msummary=+mem,-psect,-class,-hex,-file,-sha1,-sha256,-xml,-xmlfull -fmax-errors=20 -mwarn=0 -xassembler-with-cpp
-	
 else
-${OBJECTDIR}/ACD.o: ACD.s  nbproject/Makefile-${CND_CONF}.mk 
-	@${MKDIR} "${OBJECTDIR}" 
-	@${RM} ${OBJECTDIR}/ACD.o 
-	${MP_AS} -mcpu=PIC18F87K22 -c \
-	-o ${OBJECTDIR}/ACD.o \
-	ACD.s \
-	 -misa=std -msummary=+mem,-psect,-class,-hex,-file,-sha1,-sha256,-xml,-xmlfull -fmax-errors=20 -mwarn=0 -xassembler-with-cpp
-	
-${OBJECTDIR}/config.o: config.s  nbproject/Makefile-${CND_CONF}.mk 
-	@${MKDIR} "${OBJECTDIR}" 
-	@${RM} ${OBJECTDIR}/config.o 
-	${MP_AS} -mcpu=PIC18F87K22 -c \
-	-o ${OBJECTDIR}/config.o \
-	config.s \
-	 -misa=std -msummary=+mem,-psect,-class,-hex,-file,-sha1,-sha256,-xml,-xmlfull -fmax-errors=20 -mwarn=0 -xassembler-with-cpp
-	
-${OBJECTDIR}/LCD.o: LCD.s  nbproject/Makefile-${CND_CONF}.mk 
-	@${MKDIR} "${OBJECTDIR}" 
-	@${RM} ${OBJECTDIR}/LCD.o 
-	${MP_AS} -mcpu=PIC18F87K22 -c \
-	-o ${OBJECTDIR}/LCD.o \
-	LCD.s \
-	 -misa=std -msummary=+mem,-psect,-class,-hex,-file,-sha1,-sha256,-xml,-xmlfull -fmax-errors=20 -mwarn=0 -xassembler-with-cpp
-	
-${OBJECTDIR}/main.o: main.s  nbproject/Makefile-${CND_CONF}.mk 
-	@${MKDIR} "${OBJECTDIR}" 
-	@${RM} ${OBJECTDIR}/main.o 
-	${MP_AS} -mcpu=PIC18F87K22 -c \
-	-o ${OBJECTDIR}/main.o \
-	main.s \
-	 -misa=std -msummary=+mem,-psect,-class,-hex,-file,-sha1,-sha256,-xml,-xmlfull -fmax-errors=20 -mwarn=0 -xassembler-with-cpp
-	
-${OBJECTDIR}/Servo.o: Servo.s  nbproject/Makefile-${CND_CONF}.mk 
-	@${MKDIR} "${OBJECTDIR}" 
-	@${RM} ${OBJECTDIR}/Servo.o 
-	${MP_AS} -mcpu=PIC18F87K22 -c \
-	-o ${OBJECTDIR}/Servo.o \
-	Servo.s \
-	 -misa=std -msummary=+mem,-psect,-class,-hex,-file,-sha1,-sha256,-xml,-xmlfull -fmax-errors=20 -mwarn=0 -xassembler-with-cpp
-	
-${OBJECTDIR}/Touchpanel.o: Touchpanel.s  nbproject/Makefile-${CND_CONF}.mk 
-	@${MKDIR} "${OBJECTDIR}" 
-	@${RM} ${OBJECTDIR}/Touchpanel.o 
-	${MP_AS} -mcpu=PIC18F87K22 -c \
-	-o ${OBJECTDIR}/Touchpanel.o \
-	Touchpanel.s \
-	 -misa=std -msummary=+mem,-psect,-class,-hex,-file,-sha1,-sha256,-xml,-xmlfull -fmax-errors=20 -mwarn=0 -xassembler-with-cpp
-	
-${OBJECTDIR}/UART.o: UART.s  nbproject/Makefile-${CND_CONF}.mk 
-	@${MKDIR} "${OBJECTDIR}" 
-	@${RM} ${OBJECTDIR}/UART.o 
-	${MP_AS} -mcpu=PIC18F87K22 -c \
-	-o ${OBJECTDIR}/UART.o \
-	UART.s \
-	 -misa=std -msummary=+mem,-psect,-class,-hex,-file,-sha1,-sha256,-xml,-xmlfull -fmax-errors=20 -mwarn=0 -xassembler-with-cpp
-	
-${OBJECTDIR}/Numerical.o: Numerical.s  nbproject/Makefile-${CND_CONF}.mk 
-	@${MKDIR} "${OBJECTDIR}" 
-	@${RM} ${OBJECTDIR}/Numerical.o 
-	${MP_AS} -mcpu=PIC18F87K22 -c \
-	-o ${OBJECTDIR}/Numerical.o \
-	Numerical.s \
-	 -misa=std -msummary=+mem,-psect,-class,-hex,-file,-sha1,-sha256,-xml,-xmlfull -fmax-errors=20 -mwarn=0 -xassembler-with-cpp
-	
-${OBJECTDIR}/PID.o: PID.s  nbproject/Makefile-${CND_CONF}.mk 
-	@${MKDIR} "${OBJECTDIR}" 
-	@${RM} ${OBJECTDIR}/PID.o 
-	${MP_AS} -mcpu=PIC18F87K22 -c \
-	-o ${OBJECTDIR}/PID.o \
-	PID.s \
-	 -misa=std -msummary=+mem,-psect,-class,-hex,-file,-sha1,-sha256,-xml,-xmlfull -fmax-errors=20 -mwarn=0 -xassembler-with-cpp
-	
 endif
 
 # ------------------------------------------------------------------------------------
-# Rules for buildStep: pic-as-linker
+# Rules for buildStep: link
 ifeq ($(TYPE_IMAGE), DEBUG_RUN)
-dist/${CND_CONF}/${IMAGE_TYPE}/PID_Controller.X.${IMAGE_TYPE}.${OUTPUT_SUFFIX}: ${OBJECTFILES}  nbproject/Makefile-${CND_CONF}.mk    
+dist/${CND_CONF}/${IMAGE_TYPE}/PID-Controller.${IMAGE_TYPE}.${OUTPUT_SUFFIX}: ${OBJECTFILES}  nbproject/Makefile-${CND_CONF}.mk    
 	@${MKDIR} dist/${CND_CONF}/${IMAGE_TYPE} 
-	${MP_LD} -mcpu=PIC18F87K22 ${OBJECTFILES_QUOTED_IF_SPACED} \
-	-o dist/${CND_CONF}/${IMAGE_TYPE}/PID_Controller.X.${IMAGE_TYPE}.${OUTPUT_SUFFIX} \
-	 -misa=std -msummary=+mem,-psect,-class,-hex,-file,-sha1,-sha256,-xml,-xmlfull -mcallgraph=std -mno-download-hex
+	${MP_LD} $(MP_EXTRA_LD_PRE)   -p$(MP_PROCESSOR_OPTION)  -w -x -u_DEBUG -z__ICD2RAM=1 -m"${DISTDIR}/${PROJECTNAME}.${IMAGE_TYPE}.map"   -z__MPLAB_BUILD=1  -z__MPLAB_DEBUG=1 $(MP_LINKER_DEBUG_OPTION) -odist/${CND_CONF}/${IMAGE_TYPE}/PID-Controller.${IMAGE_TYPE}.${OUTPUT_SUFFIX}  ${OBJECTFILES_QUOTED_IF_SPACED}     
 else
-dist/${CND_CONF}/${IMAGE_TYPE}/PID_Controller.X.${IMAGE_TYPE}.${OUTPUT_SUFFIX}: ${OBJECTFILES}  nbproject/Makefile-${CND_CONF}.mk   
+dist/${CND_CONF}/${IMAGE_TYPE}/PID-Controller.${IMAGE_TYPE}.${OUTPUT_SUFFIX}: ${OBJECTFILES}  nbproject/Makefile-${CND_CONF}.mk   
 	@${MKDIR} dist/${CND_CONF}/${IMAGE_TYPE} 
-	${MP_LD} -mcpu=PIC18F87K22 ${OBJECTFILES_QUOTED_IF_SPACED} \
-	-o dist/${CND_CONF}/${IMAGE_TYPE}/PID_Controller.X.${IMAGE_TYPE}.${OUTPUT_SUFFIX} \
-	 -misa=std -msummary=+mem,-psect,-class,-hex,-file,-sha1,-sha256,-xml,-xmlfull -mcallgraph=std -mno-download-hex
+	${MP_LD} $(MP_EXTRA_LD_PRE)   -p$(MP_PROCESSOR_OPTION)  -w  -m"${DISTDIR}/${PROJECTNAME}.${IMAGE_TYPE}.map"   -z__MPLAB_BUILD=1  -odist/${CND_CONF}/${IMAGE_TYPE}/PID-Controller.${IMAGE_TYPE}.${DEBUGGABLE_SUFFIX}  ${OBJECTFILES_QUOTED_IF_SPACED}     
 endif
 
 

@@ -1,15 +1,16 @@
 #include <xc.inc>
 global TILT_Setup, TILT_Cycle
     
-global    scaled_err_x_H,scaled_err_x_L, scaled_err_y_H, scaled_err_y_L, S1_pulse_value, S2_pulse_value
+global    S1_pulse_value, S2_pulse_value
  
 extrn	UART_Setup, UART_Transmit_Message, UART_Write_Hex  ; external subroutines
 extrn  LCD_Setup, LCD_Write_Message, LCD_Write_Hex, LCD_Clear_Screen, LCD_New_Line
 extrn  ADC_Init, ADC_Setup_X, ADC_Setup_Y, ADC_Read 
 extrn Touchpanel_Coordinates_Hex,X_pos_H, X_pos_L, Y_pos_H, Y_pos_L
 extrn Servo_Setup, S_Pulse,S1_Pulse,S2_Pulse
-extrn Numerical_Setup, Subtraction_16bit, S1_H, S1_L, S2_H, S2_L
+extrn Subtraction_16bit, S1_H, S1_L, S2_H, S2_L
 extrn Scaling,    Dividend_H,    Dividend_L,    Divisor_H, Divisor_L, Scaling_by_Division_16bit_to_8bit
+extrn ABS_H, ABS_L,Absolute_Value_2scomp
 psect	udata_acs   ; reserve data space in access ram
 counter:    ds 1    ; reserve one byte for a counter variable
 delay_count:ds 1    ; reserve one byte for counter in the delay routine
@@ -26,11 +27,6 @@ err_x_H:	ds 1
 err_x_L:	ds 1
 err_y_H:	ds 1
 err_y_L:	ds 1
-    
-der_x_H:	ds 1
-der_x_L:	ds 1
-der_y_H:	ds 1
-der_y_L:	ds 1
 
 TILT_out_x_H:   ds 1
 TILT_out_x_L:   ds 1
@@ -132,59 +128,23 @@ TILT_Cycle:
 
     // Calculates the absolute value of the TILT output
     
-    btfss TILT_out_x_H, 7, 0
-    goto skip_TILT_x_2s_un_complement
+    movff TILT_out_x_H, ABS_H, A
+    movff TILT_out_x_L, ABS_L, A
     
-	movff TILT_out_x_L, S1_L, A
-	movff TILT_out_x_H, S1_H, A
-	movlw 0
-	movwf S2_H, A
-	movlw 1
-	movwf S2_L, A
-
-	call Subtraction_16bit
-
-	comf S1_H, 0, 0
-	movwf   Control_out_x_H, A
-	comf S1_L, 0, 0
-	movwf   Control_out_x_L, A
+    call Absolute_Value_2scomp
     
-    skip_TILT_x_2s_un_complement:
-    btfsc TILT_out_x_H, 7, 0
-    goto control_x_already_set
-    
-	movff TILT_out_x_H,  Control_out_x_H, A
-	movff TILT_out_x_L,  Control_out_x_L, A
-    
-    control_x_already_set:
-
+    movff ABS_H,  Control_out_x_H, A
+    movff ABS_L,  Control_out_x_L, A
     
     
-    btfss TILT_out_y_H, 7, 0
-    goto skip_TILT_y_2s_un_complement
     
-	movff TILT_out_y_L, S1_L, A
-	movff TILT_out_y_H, S1_H, A
-	movlw 0
-	movwf S2_H, A
-	movlw 1
-	movwf S2_L, A
-
-	call Subtraction_16bit
-
-	comf S1_H, 0, 0
-	movwf   Control_out_y_H, A
-	comf S1_L, 0, 0
-	movwf   Control_out_y_L, A
+    movff TILT_out_y_H, ABS_H, A
+    movff TILT_out_y_L, ABS_L, A
     
-    skip_TILT_y_2s_un_complement:
-    btfsc TILT_out_y_H, 7, 0
-    goto control_y_already_set
+    call Absolute_Value_2scomp
     
-	movff TILT_out_y_H,  Control_out_y_H, A
-	movff TILT_out_y_L,  Control_out_y_L, A
-    
-    control_y_already_set:
+    movff ABS_H,  Control_out_y_H, A
+    movff ABS_L,  Control_out_y_L, A
     
     
     // convert from Threshold to range 24d
@@ -196,7 +156,8 @@ TILT_Cycle:
     movff Threshold_L, Divisor_L, A
     movlw 20
     movwf Scaling, A
-    call Scaling_by_Division_16bit_to_8bit
+    call Scaling_by_Division_16bit_to_8bit // INTEGER DEVISION IS STORED IN PRODH
+    
     btfss TILT_out_x_H, 7, 0
     goto servo_boost_negative_x
     servo_boost_positive_x:
@@ -218,7 +179,8 @@ TILT_Cycle:
     movff Threshold_L, Divisor_L, A
     movlw 20
     movwf Scaling, A
-    call Scaling_by_Division_16bit_to_8bit
+    call Scaling_by_Division_16bit_to_8bit // INTEGER DEVISION IS STORED IN PRODH
+    
     btfss TILT_out_y_H, 7, 0
     goto servo_boost_negative_y
     servo_boost_positive_y:

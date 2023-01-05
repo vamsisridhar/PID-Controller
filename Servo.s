@@ -13,6 +13,7 @@ psect udata_acs, space = 1
 psect servo_code, class =CODE
     
     Servo_Setup:
+	// sets outputs
 	bcf TRISD, S1_PWM, A
 	bcf TRISD, S2_PWM, A
 	return
@@ -58,7 +59,7 @@ psect servo_code, class =CODE
 	return	
 
     S_Pulse:
-        movlw   20
+        movlw   20				; sends 20 pulses
 	movwf    servo_counter, A
 	servo_pulsing:
 	    movf   S2_pulse_value, W, A         ; value of S2 pulse

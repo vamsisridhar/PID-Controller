@@ -5,7 +5,7 @@ extrn  ADC_Init
 extrn Touchpanel_Coordinates_Hex
 extrn Servo_Setup
 extrn Servo_Setup,S1_Pulse, S2_Pulse
-    
+extrn LCD_Setup
 extrn	TILT_Setup
 extrn	TILT_Cycle
 psect udata_acs
@@ -17,8 +17,6 @@ psect	code, abs
 rst: 	org 0x0000
  	goto	setup
 	
-int_hi: org 0x0008
-    goto TILT_Cycle
 
 	; ******* Programme FLASH read Setup Code ***********************
 setup:	
@@ -34,7 +32,7 @@ setup:
 
 
 
-test_start_loop:
+level:
     call Touchpanel_Coordinates_Hex
     movlw 34
     call S1_Pulse
@@ -48,7 +46,7 @@ test_start_loop:
     
     
     
-    goto test_start_loop
+    goto level
     
 	; ******* Main programme ****************************************
 start:

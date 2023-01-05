@@ -1,6 +1,7 @@
 #include <xc.inc>
 global Subtraction_16bit, S1_H, S1_L, S2_H, S2_L
 global Scaling, Dividend_H, Dividend_L, Divisor_H, Divisor_L, Scaling_by_Division_16bit_to_8bit
+global ABS_H, ABS_L,Absolute_Value_2scomp
 psect udata_acs
 
     S1_H: ds 1
@@ -8,6 +9,8 @@ psect udata_acs
     S2_H: ds 1
     S2_L: ds 1
     
+    ABS_H: ds 1
+    ABS_L: ds 1
     
     Decimal: ds 1
     Scaling: ds 1
@@ -35,7 +38,26 @@ Subtraction_16bit:
    
     return
    
+ Absolute_Value_2scomp:
+    btfss ABS_H, 7, 0
+    goto skip_2s_un_complement
+    
+	movff ABS_L, S1_L, A
+	movff ABS_H, S1_H, A
+	movlw 0
+	movwf S2_H, A
+	movlw 1
+	movwf S2_L, A
 
+	call Subtraction_16bit
+
+	comf S1_H, 0, 0
+	movwf   ABS_H, A
+	comf S1_L, 0, 0
+	movwf   ABS_L, A
+    
+    skip_2s_un_complement:
+    return
     
 Scaling_by_Division_16bit_to_8bit:
     //used to map a value in the range 0 - Divisor to range 0 - Scaling
